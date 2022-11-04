@@ -1,0 +1,10 @@
+name: ChristmasEvent
+version: '${project.version}'
+main: indy.christmasevent.main.Main
+api-version: 1.16
+authors: [ indyPlayGames ]
+
+commands:
+  event:
+    description: Base plugin command.
+    aliases: [ event ]

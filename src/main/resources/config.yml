@@ -1,0 +1,13 @@
+Messages:
+  missing-argument: '&cYou have to provide an argument!'
+  wrong-argument: '&cYou have to provide correct argument!'
+  event-start-message: '&aEvent has started!'
+  event-started-message: '&cEvent has started already!'
+  event-stop-message: '&aEvent has ended!'
+  event-not-active-message: '&cEvent is not active!'
+
+Event:
+  started: false
+  bossbar-title: '&cHo! Ho! Ho! Our Elves escaped from us! Try to catch them.'
+  bossbar-color: RED
+  bossbar-style: SEGMENTED_20
