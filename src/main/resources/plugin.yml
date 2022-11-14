@@ -8,3 +8,14 @@ commands:
   event:
     description: Base plugin command.
     aliases: [ event ]
+
+permissions:
+  christmasevent.*:
+    description: all permissions
+    default: op
+  christmasevent.start:
+    description: permission to start event
+    default: op
+  christmasevent.stop:
+    description: permission to stop event
+    default: op

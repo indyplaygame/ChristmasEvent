@@ -4,6 +4,7 @@ import indy.christmasevent.commands.Commands;
 import indy.christmasevent.commands.startCommand;
 import indy.christmasevent.commands.stopCommand;
 import indy.christmasevent.events.Events;
+import indy.christmasevent.loot.elfLoot;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Main extends JavaPlugin {
@@ -21,6 +22,8 @@ public final class Main extends JavaPlugin {
 
         saveConfig();
         reloadConfig();
+
+        elfLoot.getDrops();
     }
 
     @Override

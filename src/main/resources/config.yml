@@ -5,9 +5,102 @@ Messages:
   event-started-message: '&cEvent has started already!'
   event-stop-message: '&aEvent has ended!'
   event-not-active-message: '&cEvent is not active!'
+  elf-kill-message: '&cYou have caught an Elf!'
 
 Event:
   started: false
   bossbar-title: '&cHo! Ho! Ho! Our Elves escaped from us! Try to catch them.'
   bossbar-color: RED
   bossbar-style: SEGMENTED_20
+
+Elves:
+  name: '&cElf'
+  health: 1
+  player-avoid-distance: 6
+  player-avoid-speed: 1.0
+  elves-amount: 50
+  add-drops-to-player-inventory: true
+  drops:
+    loot:
+      - white-gift
+      - green-gift
+      - blue-gift
+      - purple-gift
+      - yellow-gift
+      - red-gift
+    items:
+      white-gift:
+        item: PLAYER_HEAD
+        head-texture: 'http://textures.minecraft.net/texture/10f5398510b1a05afc5b201ead8bfc583e57d7202f5193b0b761fcbd0ae2'
+        chance: 0.5
+        amount: 1
+        value: 500
+        name: '&fWhite Gift'
+        lore:
+          - '&7Common &fWhite Gift &7dropped'
+          - '&7by an &cElf&7! Bring it to the'
+          - '&cSanta Claus &7to receive'
+          - '&7reward!'
+      green-gift:
+        item: PLAYER_HEAD
+        head-texture: 'http://textures.minecraft.net/texture/81e42e3725c2b4ae6900580c4e2a6b830f6eca0211f7a3641433fc67fbc43d3f'
+        chance: 0.25
+        amount: 1
+        value: 2000
+        name: '&2Green Gift'
+        lore:
+          - '&7Uncommon &2Green Gift &7dropped'
+          - '&7by an &cElf&7! Bring it to the'
+          - '&cSanta Claus &7to receive'
+          - '&7reward!'
+      blue-gift:
+        item: PLAYER_HEAD
+        head-texture: 'http://textures.minecraft.net/texture/d6e12fdae1fceba6879f659796132a7ffa08cd92a26cb7a1067d49703d7b1b4b'
+        chance: 0.125
+        amount: 1
+        value: 5000
+        name: '&9Blue Gift'
+        lore:
+          - '&7Rare &9Blue Gift &7dropped'
+          - '&7by an &cElf&7! Bring it to the'
+          - '&cSanta Claus &7to receive'
+          - '&7reward!'
+      purple-gift:
+        item: PLAYER_HEAD
+        head-texture: 'http://textures.minecraft.net/texture/b0b45cbfbdfb6dc6694de96d97da36ae7b5fe3cd94a5b26250554c5f022ca7d0'
+        chance: 0.0625
+        amount: 1
+        value: 50000
+        name: '&5Purple Gift'
+        lore:
+          - '&7Epic &5Purple Gift &7dropped'
+          - '&7by an &cElf&7! Bring it to the'
+          - '&cSanta Claus &7to receive'
+          - '&7reward!'
+      yellow-gift:
+        item: PLAYER_HEAD
+        head-texture: 'http://textures.minecraft.net/texture/1375061d08f1d7b317675aa7fa8800d6f2066e018d9f91ecddf9caf304e97e92'
+        chance: 0.03125
+        amount: 1
+        value: 10000
+        name: '&eYellow Gift'
+        lore:
+          - '&7Legendary &eYellow Gift &7dropped'
+          - '&7by an &cElf&7! Bring it to the'
+          - '&cSanta Claus &7to receive'
+          - '&7reward!'
+      red-gift:
+        material: PLAYER_HEAD
+        head-texture: "http://textures.minecraft.net/texture/5726d9d0632e40bda5bcf65839ba2cc98a87bd619c53adf00310d6fc71f042b5"
+        chance: 0.03125
+        amount: 1
+        value: 20000
+        name: '&cRed Gift'
+        lore:
+          - '&7Mythic &cRed Gift &7dropped'
+          - '&7by an &cElf&7! Bring it to the'
+          - '&cSanta Claus &7to receive'
+          - '&7reward!'
+
+DeveloperMode:
+  enabled: true
