@@ -6,6 +6,7 @@ Messages:
   event-stop-message: '&aEvent has ended!'
   event-not-active-message: '&cEvent is not active!'
   elf-kill-message: '&cYou have caught an Elf!'
+  non-player-executor: '&cYou can only perform this command as player.'
 
 Event:
   started: false
@@ -20,6 +21,33 @@ Elves:
   player-avoid-speed: 1.0
   elves-amount: 50
   add-drops-to-player-inventory: true
+  armor:
+    head:
+      material: PLAYER_HEAD
+      head-texture: "http://textures.minecraft.net/texture/47327ac5283de128ec3e15269a392bf3e0cd7f98686e1a9988ece806d57bb"
+      color: ''
+    chestplate:
+      material: LEATHER_CHESTPLATE
+      color: '#FF0000'
+    leggings:
+      material: LEATHER_LEGGINGS
+      color: '#00FF00'
+    boots:
+      material: LEATHER_BOOTS
+      color: '#FF0000'
+  spawn-area:
+    world: world
+    pos1:
+      x: 0
+      z: 0
+    pos2:
+      x: 0
+      z: 0
+  auto-spawn:
+    enabled: true
+    time:
+      hour: 22
+      minute: 0
   drops:
     loot:
       - white-gift
@@ -30,8 +58,9 @@ Elves:
       - red-gift
     items:
       white-gift:
-        item: PLAYER_HEAD
+        material: PLAYER_HEAD
         head-texture: 'http://textures.minecraft.net/texture/10f5398510b1a05afc5b201ead8bfc583e57d7202f5193b0b761fcbd0ae2'
+        custom-model-data: 863701
         chance: 0.5
         amount: 1
         value: 500
@@ -42,8 +71,9 @@ Elves:
           - '&cSanta Claus &7to receive'
           - '&7reward!'
       green-gift:
-        item: PLAYER_HEAD
+        material: PLAYER_HEAD
         head-texture: 'http://textures.minecraft.net/texture/81e42e3725c2b4ae6900580c4e2a6b830f6eca0211f7a3641433fc67fbc43d3f'
+        custom-model-data: 863702
         chance: 0.25
         amount: 1
         value: 2000
@@ -54,8 +84,9 @@ Elves:
           - '&cSanta Claus &7to receive'
           - '&7reward!'
       blue-gift:
-        item: PLAYER_HEAD
+        material: PLAYER_HEAD
         head-texture: 'http://textures.minecraft.net/texture/d6e12fdae1fceba6879f659796132a7ffa08cd92a26cb7a1067d49703d7b1b4b'
+        custom-model-data: 863703
         chance: 0.125
         amount: 1
         value: 5000
@@ -66,8 +97,9 @@ Elves:
           - '&cSanta Claus &7to receive'
           - '&7reward!'
       purple-gift:
-        item: PLAYER_HEAD
+        material: PLAYER_HEAD
         head-texture: 'http://textures.minecraft.net/texture/b0b45cbfbdfb6dc6694de96d97da36ae7b5fe3cd94a5b26250554c5f022ca7d0'
+        custom-model-data: 863704
         chance: 0.0625
         amount: 1
         value: 50000
@@ -78,8 +110,9 @@ Elves:
           - '&cSanta Claus &7to receive'
           - '&7reward!'
       yellow-gift:
-        item: PLAYER_HEAD
+        material: PLAYER_HEAD
         head-texture: 'http://textures.minecraft.net/texture/1375061d08f1d7b317675aa7fa8800d6f2066e018d9f91ecddf9caf304e97e92'
+        custom-model-data: 863705
         chance: 0.03125
         amount: 1
         value: 10000
@@ -92,6 +125,7 @@ Elves:
       red-gift:
         material: PLAYER_HEAD
         head-texture: "http://textures.minecraft.net/texture/5726d9d0632e40bda5bcf65839ba2cc98a87bd619c53adf00310d6fc71f042b5"
+        custom-model-data: 863706
         chance: 0.03125
         amount: 1
         value: 20000
@@ -102,5 +136,91 @@ Elves:
           - '&cSanta Claus &7to receive'
           - '&7reward!'
 
+ExchangeGUI:
+  rows: 6
+  title: '&8Exchange Gifts'
+  exchange-selected:
+    title: '&8Exchange Selected Gifts'
+    rows: 6
+  items:
+    gui-icon:
+      material: PLAYER_HEAD
+      head-texture: "http://textures.minecraft.net/texture/eb1b6a6c0543187579be87a984cea98e888f9e607ce08cb965662aeae7324a69"
+      amount: 1
+      slot: 13
+      name: '&cSanta Claus'
+      lore:
+        - '&7You can exchange here your'
+        - '&7gifts for money.'
+    exchange-selected:
+      material: CHEST
+      head-texture: ""
+      amount: 1
+      slot: 38
+      name: '&eExchange Selected Gifts'
+      lore:
+        - '&7Exchange gifts of selected'
+        - '&7type from inventory for money.'
+    exchange-all:
+      material: CHEST
+      head-texture: ""
+      amount: 64
+      slot: 40
+      name: '&aExchange All Gifts'
+      lore:
+        - '&7Exchange all gifts from your'
+        - '&7inventory for money. You will'
+        - '&7receive &a$%value%&7.'
+    exchange-cancel:
+      material: BARRIER
+      head-texture: ""
+      amount: 1
+      slot: 42
+      name: '&cCancel'
+      lore:
+        - "&7Don't exchange any gifts"
+        - "&7and close the gui."
+    exchange-selected-cancel:
+      material: BARRIER
+      head-texture: ""
+      amount: 1
+      slot: 49
+      name: '&cExit'
+      lore:
+        - "&7Don't exchange any gifts"
+        - "&7and close the gui."
+    exchange-selected-back:
+      material: ARROW
+      head-texture: ""
+      amount: 1
+      slot: 48
+      name: '&cGo back'
+      lore:
+        - "&7Go back to the main gui."
+    empty-slots:
+      enabled: true
+      material: GRAY_STAINED_GLASS_PANE
+      head-texture: ""
+      amount: 1
+      name: ''
+      lore:
+        - ''
+    exchange-selected-item:
+      material: '%material%'
+      head-texture: '%head_texture%'
+      amount: 1
+      name: '%name%'
+      lore:
+        - "&7Exchange all %name%s &7from your"
+        - "&7inventory. Value: &a$%value%&7."
+    exchange-selected-empty-slots:
+      enabled: true
+      material: GRAY_STAINED_GLASS_PANE
+      head-texture: ""
+      amount: 1
+      slots: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 17, 18, 26, 27, 35, 36, 44, 45, 46, 47, 50, 51, 52, 53]
+      name: ''
+      lore:
+        - ''
 DeveloperMode:
   enabled: true

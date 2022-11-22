@@ -31,10 +31,6 @@ public class startCommand implements CommandExecutor {
         if(sender.hasPermission("christmasevent.start")) {
             if (sender instanceof Player) {
                 Player player = (Player) sender;
-                Elf elf = new Elf(player.getLocation());
-                WorldServer world = ((CraftWorld) player.getWorld()).getHandle();
-
-                world.addEntity(elf);
             }
             if (!getConfig().getBoolean("Event.started")) {
                 getConfig().set("Event.started", true);
@@ -49,6 +45,7 @@ public class startCommand implements CommandExecutor {
                         bar.addPlayer(player);
                     }
                 }
+                Elf.spawnElves(Utils.getString("Elves.spawn-area.world"), Utils.getInt("Elves.elves-amount"));
 
                 sender.sendMessage(Utils.getMessage("Messages.event-start-message"));
             } else {

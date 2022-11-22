@@ -3,6 +3,7 @@ version: '${project.version}'
 main: indy.christmasevent.main.Main
 api-version: 1.16
 authors: [ indyPlayGames ]
+depend: [Vault]
 
 commands:
   event:
