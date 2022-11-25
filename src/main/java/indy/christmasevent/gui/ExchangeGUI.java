@@ -10,23 +10,32 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-
-import java.util.ArrayList;
 
 import static indy.christmasevent.utils.Utils.*;
 
 public class ExchangeGUI implements Listener {
 
-    private static Economy economy = Main.getEconomy();
+    private static final Economy economy = Main.getEconomy();
     private static Inventory inventory = null;
 
-    public static Inventory mainGUI(Player player) {
+    public ExchangeGUI() {
         inventory = Bukkit.createInventory(null, 9 * getInt("ExchangeGUI.rows"), getMessage("ExchangeGUI.title"));
+    }
+
+    public static Inventory getInventory(Player player) {
+        initContents(player);
+        return inventory;
+    }
+
+    public static void initContents(Player player) {
+        inventory.clear();
 
         double value = calculateValue(player);
-        sendDebugMessage(String.valueOf(value));
+
+        sendDebugMessage("calculated gifts value for " + player.getName() + ": " + value);
 
         addItem(inventory, getInt("ExchangeGUI.items.gui-icon.slot"), Utils.createItem(
                 getString("ExchangeGUI.items.gui-icon.material"),
@@ -64,8 +73,6 @@ public class ExchangeGUI implements Listener {
                 }
             }
         }
-
-        return inventory;
     }
 
     public static void addItem(Inventory inv, int slot, ItemStack item) {
@@ -76,39 +83,16 @@ public class ExchangeGUI implements Listener {
         inv.addItem(item);
     }
 
-    @EventHandler
-    public void onInventoryClick(InventoryClickEvent e) {
-        if (!e.getInventory().equals(inventory)) return;
-
-        e.setCancelled(true);
-
-        ItemStack clickedItem = e.getCurrentItem();
-        if(clickedItem == null || clickedItem.getType().isAir()) return;
-
-        Player player = (Player) e.getWhoClicked();
-        int slot = e.getRawSlot();
-
-        if(slot == getInt("ExchangeGUI.items.exchange-cancel.slot")) {
-            player.closeInventory();
-        } else if(slot == getInt("ExchangeGUI.items.exchange-all.slot")) {
-            exchangeGifts(player);
-        } else if(slot == getInt("ExchangeGUI.items.exchange-selected.slot")) {
-            player.openInventory(exchangeSelectedGUI.subGUI(player));
-        }
-    }
-
     public static double calculateValue(Player player) {
-
         double value = 0;
 
         for(String type : getList("Elves.drops.loot")) {
-            calculateValue(player, type);
+            value = value + calculateValue(player, type);
         }
         return value;
     }
 
     public static double calculateValue(Player player, String type) {
-
         double value = 0;
 
         for(ItemStack item : player.getInventory().getContents()) {
@@ -132,15 +116,41 @@ public class ExchangeGUI implements Listener {
             ItemStack item = player.getInventory().getItem(i);
             if (item != null && item.getItemMeta().hasCustomModelData()) {
                 if (item.getItemMeta().getCustomModelData() == getInt("Elves.drops.items." + type + ".custom-model-data")) {
-                    EconomyResponse response = economy.depositPlayer(player, (item.getAmount() * getDouble("Elves.drops.items." + type + ".value")));
+                    double value = item.getAmount() * getDouble("Elves.drops.items." + type + ".value");
+                    EconomyResponse response = economy.depositPlayer(player, value);
                     if(response.transactionSuccess()) {
-                        player.sendMessage("Success");
-                    } else {
-                        player.sendMessage("Error");
+                        player.sendMessage(getMessage("Messages.gifts-exchange-message")
+                                .replace("%value%", String.valueOf(value))
+                                .replace("%item%", getMessage("Elves.drops.items." + type + ".name")));
                     }
                     player.getInventory().setItem(i, new ItemStack(Material.AIR));
                 }
             }
         }
+    }
+
+    @EventHandler
+    public void onInventoryClick(InventoryClickEvent e) {
+        if (!(e.getInventory().equals(inventory))) return;
+        e.setCancelled(true);
+
+        ItemStack clickedItem = e.getCurrentItem();
+        if(clickedItem == null || clickedItem.getType().isAir()) return;
+
+        Player player = (Player) e.getWhoClicked();
+        int slot = e.getRawSlot();
+
+        if(slot == getInt("ExchangeGUI.items.exchange-cancel.slot")) {
+            player.closeInventory();
+        } else if(slot == getInt("ExchangeGUI.items.exchange-all.slot")) {
+            exchangeGifts(player);
+        } else if(slot == getInt("ExchangeGUI.items.exchange-selected.slot")) {
+            player.openInventory(exchangeSelectedGUI.getInventory(player));
+        }
+    }
+
+    @EventHandler
+    public void onInventoryClick(InventoryDragEvent e) {
+        if (e.getInventory().equals(inventory)) e.setCancelled(true);
     }
 }

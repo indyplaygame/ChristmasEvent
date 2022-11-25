@@ -6,10 +6,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_16_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_16_R3.inventory.CraftItemStack;
+import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
+import static indy.christmasevent.utils.Utils.*;
 
-public class Elf extends EntityCreature {
+public class Elf extends EntityZombie {
 
     public Elf(Location location) {
         super(EntityTypes.ZOMBIE, ((CraftWorld) location.getWorld()).getHandle());
@@ -17,7 +18,7 @@ public class Elf extends EntityCreature {
         this.setPosition(location.getX(), location.getY(), location.getZ());
         this.setCustomName(new ChatComponentText(Utils.formatColor(Utils.getConfig().getString("Elves.name"))));
         this.setHealth(Utils.getConfig().getInt("Elves.health"));
-        this.setBaby(true);
+        this.setBaby(getBoolean("Elves.baby"));
 
         this.setSlot(EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(
                 Utils.createItem(Utils.getString("Elves.armor.head.material"),
@@ -46,7 +47,7 @@ public class Elf extends EntityCreature {
         int minZ = Math.min(Utils.getInt("Elves.spawn-area.pos1.z"), Utils.getInt("Elves.spawn-area.pos2.z"));
         int maxZ = Math.max(Utils.getInt("Elves.spawn-area.pos1.z"), Utils.getInt("Elves.spawn-area.pos2.z"));
 
-        Utils.sendDebugMessage("area: " + minX + ", " + maxX + ", " + minZ + ", " + maxZ);
+        sendDebugMessage("elves spawning area: " + minX + ", " + maxX + ", " + minZ + ", " + maxZ);
 
         for(int i = 0; i < amount; i++) {
             int x = Utils.randomInt(minX, maxX);
@@ -55,9 +56,13 @@ public class Elf extends EntityCreature {
             Location location = new Location(world, x, y, z);
             Elf elf = new Elf(location);
 
-            Utils.sendDebugMessage("elf no. " + i + ", loc: " + x + ", " + y + ", " + z);
+            sendDebugMessage("elf no. " + i + ", loc: " + x + ", " + y + ", " + z);
 
             worldServer.addEntity(elf);
+        }
+
+        for(Player player : Bukkit.getOnlinePlayers()) {
+            player.sendMessage(getMessage("Messages.elves-auto-spawn-message"));
         }
     }
 }

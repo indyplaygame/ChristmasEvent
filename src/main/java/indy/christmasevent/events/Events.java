@@ -14,21 +14,29 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.loot.LootContext;
 import org.bukkit.plugin.Plugin;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.*;
+
+import static indy.christmasevent.utils.Utils.*;
 
 public class Events implements Listener {
 
     BossBar bar = ProgressBar.getEventBar();
+
+    private static Map<Integer, String> types_map = new HashMap();
+
+    public static void mapTypes() {
+        for(String type : getList("Elves.drops.loot")) {
+            types_map.put(getInt("Elves.drops.items." + type + ".custom-model-data"), type);
+        }
+    }
 
     public static int scheduledEvent(Plugin plugin, Runnable task, int hour, int min) {
         Calendar calendar = Calendar.getInstance();
@@ -59,14 +67,20 @@ public class Events implements Listener {
             }
         }
     }
+
+    @EventHandler
+    public void onPlace(PlayerInteractEvent e) {
+        if(e.hasItem() && e.getItem().getItemMeta().hasCustomModelData() &&
+           types_map.containsKey(e.getItem().getItemMeta().getCustomModelData())) {
+            e.setCancelled(true);
+        }
+    }
+
     @EventHandler
     public void onEntityDeath(EntityDeathEvent e) {
-        if(e.getEntity().getKiller() == null) {
-            return;
-        }
-        if (!(((CraftEntity) e.getEntity()).getHandle() instanceof Elf)) {
-            return;
-        }
+        if (e.getEntity().getKiller() == null) return;
+        if (!(((CraftEntity) e.getEntity()).getHandle() instanceof Elf)) return;
+
         LivingEntity entity = e.getEntity();
         LootContext.Builder builder = new LootContext.Builder(entity.getLocation());
         Player killer = e.getEntity().getKiller();
@@ -81,14 +95,49 @@ public class Events implements Listener {
 
         e.getDrops().clear();
 
-        for(ItemStack item : items) {
-            if(Utils.getConfig().getBoolean("Elves.add-drops-to-player-inventory")) {
-                killer.getInventory().addItem(item);
-            } else {
-                e.getDrops().add(item);
-            }
+        ItemStack item = items.get(0);
+
+        if (getBoolean("Elves.add-drops-to-player-inventory")) {
+            killer.getInventory().addItem(items.get(0));
+        } else {
+            e.getDrops().add(item);
         }
 
-        killer.sendMessage(Utils.getMessage("Messages.elf-kill-message"));
+        killer.sendMessage(getMessage("Messages.elf-kill-message")
+                .replace("%item%", item.getItemMeta().getDisplayName())
+                .replace("%amount%", String.valueOf(item.getAmount())));
+
+        sendDebugMessage("rolled item: " + types_map.get(item.getItemMeta().getCustomModelData()));
+
+        if(getBoolean("Elves.announce.title.enabled")) {
+            showTitle(killer.getPlayer(), "TITLE",
+                    getMessage("Elves.announce.title.text")
+                            .replace("%rarity%", getMessage("Elves.drops.items." + types_map.get(item.getItemMeta().getCustomModelData()) + ".rarity"))
+                            .replace("%item%", item.getItemMeta().getDisplayName())
+                            .replace("%amount%", String.valueOf(item.getAmount())),
+                    getInt("Elves.announce.title.fade-in"),
+                    getInt("Elves.announce.title.stay"),
+                    getInt("Elves.announce.title.fade-out"));
+        }
+        if(getBoolean("Elves.announce.subtitle.enabled")) {
+            showTitle(killer.getPlayer(), "SUBTITLE",
+                    getMessage("Elves.announce.subtitle.text")
+                            .replace("%rarity%", getMessage("Elves.drops.items." + types_map.get(item.getItemMeta().getCustomModelData()) + ".rarity"))
+                            .replace("%item%", item.getItemMeta().getDisplayName())
+                            .replace("%amount%", String.valueOf(item.getAmount())),
+                    getInt("Elves.announce.subtitle.fade-in"),
+                    getInt("Elves.announce.subtitle.stay"),
+                    getInt("Elves.announce.subtitle.fade-out"));
+        }
+        if(getBoolean("Elves.announce.action-bar.enabled")) {
+            showTitle(killer.getPlayer(), "ACTIONBAR",
+                    getMessage("Elves.announce.action-bar.text")
+                            .replace("%rarity%", getMessage("Elves.drops.items." + types_map.get(item.getItemMeta().getCustomModelData()) + ".rarity"))
+                            .replace("%item%", item.getItemMeta().getDisplayName())
+                            .replace("%amount%", String.valueOf(item.getAmount())),
+                    getInt("Elves.announce.action-bar.fade-in"),
+                    getInt("Elves.announce.action-bar.stay"),
+                    getInt("Elves.announce.action-bar.fade-out"));
+        }
     }
 }

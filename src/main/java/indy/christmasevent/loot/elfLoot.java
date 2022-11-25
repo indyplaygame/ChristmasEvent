@@ -11,11 +11,11 @@ import org.bukkit.loot.LootTable;
 
 import java.util.*;
 
-import static indy.christmasevent.utils.Utils.getConfig;
+import static indy.christmasevent.utils.Utils.*;
 
 public class elfLoot implements LootTable {
 
-    private Collection<ItemStack> items = new ArrayList<ItemStack>();
+    private Collection<ItemStack> items = new ArrayList<>();
     private NamespacedKey key = new NamespacedKey(Main.getPlugin(Main.class), "elf_loot");
     private static List<String> dropslist = (List<String>) getConfig().getList("Elves.drops.loot");
     private static Map<String, ItemStack> drops = new HashMap<>();
@@ -24,6 +24,10 @@ public class elfLoot implements LootTable {
         for(String drop : dropslist) {
             drops.put(drop, Items.createGift(drop));
         }
+    }
+
+    public static ItemStack getItem(String type) {
+        return drops.get(type);
     }
 
     @Override
@@ -39,10 +43,10 @@ public class elfLoot implements LootTable {
                 items.add(drops.get(drop));
             }
 
-            Utils.sendDebugMessage(drop + ": " + oldChance + " -> " + chance);
+            sendDebugMessage("drop range for " + drop + ": " + oldChance + " -> " + chance);
         }
 
-        Utils.sendDebugMessage(String.valueOf(rnd));
+        sendDebugMessage("rolled number: " + round(rnd, 2));
 
         return items;
     }

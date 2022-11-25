@@ -5,8 +5,15 @@ Messages:
   event-started-message: '&cEvent has started already!'
   event-stop-message: '&aEvent has ended!'
   event-not-active-message: '&cEvent is not active!'
-  elf-kill-message: '&cYou have caught an Elf!'
+  elf-kill-message: '&cYou have caught an Elf! (+%amount% %item%&c)'
   non-player-executor: '&cYou can only perform this command as player.'
+  elves-auto-spawn-message: '&cNew Elves arrived! Catch them before other players do it!'
+  gifts-exchange-message: '&cYou have exchanged your %item%s for &a$%value%&c.'
+  give-missing-player: '&cYou have to provide player name. Syntax: /event give <player> <item> <amount>.'
+  give-missing-item: '&cYou have to provide item name. Syntax: /event give <player> <item> <amount>.'
+  give-player-offline: "&cPlayer &a%player% &cis offline or don't exist."
+  give-wrong-item: '&cThere is no item called &a%item-name%&c.'
+  give-success: '&aYou gave &c%amount%x %item-name% &ato &c%player%&a.'
 
 Event:
   started: false
@@ -21,6 +28,26 @@ Elves:
   player-avoid-speed: 1.0
   elves-amount: 50
   add-drops-to-player-inventory: true
+  baby: true
+  announce:
+    title:
+      enabled: true
+      text: '%rarity% DROP!'
+      fade-in: 1
+      stay: 2
+      fade-out: 1
+    subtitle:
+      enabled: true
+      text: '%amount%x %item%'
+      fade-in: 1
+      stay: 2
+      fade-out: 1
+    action-bar:
+      enabled: true
+      text: '+%amount% %item%'
+      fade-in: 1
+      stay: 2
+      fade-out: 1
   armor:
     head:
       material: PLAYER_HEAD
@@ -62,6 +89,7 @@ Elves:
         head-texture: 'http://textures.minecraft.net/texture/10f5398510b1a05afc5b201ead8bfc583e57d7202f5193b0b761fcbd0ae2'
         custom-model-data: 863701
         chance: 0.5
+        rarity: '&fCOMMON'
         amount: 1
         value: 500
         name: '&fWhite Gift'
@@ -75,6 +103,7 @@ Elves:
         head-texture: 'http://textures.minecraft.net/texture/81e42e3725c2b4ae6900580c4e2a6b830f6eca0211f7a3641433fc67fbc43d3f'
         custom-model-data: 863702
         chance: 0.25
+        rarity: '&aUNCOMMON'
         amount: 1
         value: 2000
         name: '&2Green Gift'
@@ -88,6 +117,7 @@ Elves:
         head-texture: 'http://textures.minecraft.net/texture/d6e12fdae1fceba6879f659796132a7ffa08cd92a26cb7a1067d49703d7b1b4b'
         custom-model-data: 863703
         chance: 0.125
+        rarity: '&9RARE'
         amount: 1
         value: 5000
         name: '&9Blue Gift'
@@ -101,6 +131,7 @@ Elves:
         head-texture: 'http://textures.minecraft.net/texture/b0b45cbfbdfb6dc6694de96d97da36ae7b5fe3cd94a5b26250554c5f022ca7d0'
         custom-model-data: 863704
         chance: 0.0625
+        rarity: '&5EPIC'
         amount: 1
         value: 50000
         name: '&5Purple Gift'
@@ -114,6 +145,7 @@ Elves:
         head-texture: 'http://textures.minecraft.net/texture/1375061d08f1d7b317675aa7fa8800d6f2066e018d9f91ecddf9caf304e97e92'
         custom-model-data: 863705
         chance: 0.03125
+        rarity: '&6LEGENDARY'
         amount: 1
         value: 10000
         name: '&eYellow Gift'
@@ -127,6 +159,7 @@ Elves:
         head-texture: "http://textures.minecraft.net/texture/5726d9d0632e40bda5bcf65839ba2cc98a87bd619c53adf00310d6fc71f042b5"
         custom-model-data: 863706
         chance: 0.03125
+        rarity: '&cMYTHIC'
         amount: 1
         value: 20000
         name: '&cRed Gift'
@@ -222,5 +255,6 @@ ExchangeGUI:
       name: ''
       lore:
         - ''
+
 DeveloperMode:
   enabled: true

@@ -1,14 +1,12 @@
 package indy.christmasevent.main;
 
-import indy.christmasevent.commands.Commands;
-import indy.christmasevent.commands.exchangeCommand;
-import indy.christmasevent.commands.startCommand;
-import indy.christmasevent.commands.stopCommand;
+import indy.christmasevent.commands.*;
 import indy.christmasevent.events.Events;
 import indy.christmasevent.gui.ExchangeGUI;
 import indy.christmasevent.gui.exchangeSelectedGUI;
 import indy.christmasevent.loot.elfLoot;
 import indy.christmasevent.mobs.Elf;
+import indy.christmasevent.tabcompletion.tabCompletion;
 import indy.christmasevent.utils.Utils;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -29,13 +27,17 @@ public final class Main extends JavaPlugin {
             return;
         }
 
+        getConfig().options().copyHeader(true);
         getConfig().options().copyDefaults(true);
 
         Commands commands = new Commands();
         commands.registerSubcommand("start", new startCommand());
         commands.registerSubcommand("stop", new stopCommand());
         commands.registerSubcommand("exchange", new exchangeCommand());
-        getCommand("event").setExecutor(commands);
+        commands.registerSubcommand("spawn", new spawnCommand());
+        commands.registerSubcommand("give", new giveCommand());
+        getCommand("christmasevent").setExecutor(commands);
+        getCommand("christmasevent").setTabCompleter(new tabCompletion());
 
         getServer().getPluginManager().registerEvents(new Events(), this);
         getServer().getPluginManager().registerEvents(new ExchangeGUI(), this);
@@ -45,6 +47,7 @@ public final class Main extends JavaPlugin {
         reloadConfig();
 
         elfLoot.getDrops();
+        Events.mapTypes();
 
         Events.scheduledEvent(this, new Runnable() {
             @Override
@@ -57,7 +60,7 @@ public final class Main extends JavaPlugin {
 
     @Override
     public void onDisable() {
-
+        stopCommand.stopEvent();
     }
 
     private boolean setupEconomy() {

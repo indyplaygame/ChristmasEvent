@@ -18,6 +18,8 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
+import static indy.christmasevent.utils.Utils.getConfig;
+
 public class startCommand implements CommandExecutor {
 
     BossBar bar = ProgressBar.getEventBar();

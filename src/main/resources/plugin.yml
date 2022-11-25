@@ -6,7 +6,7 @@ authors: [ indyPlayGames ]
 depend: [Vault]
 
 commands:
-  event:
+  christmasevent:
     description: Base plugin command.
     aliases: [ event ]
 
@@ -19,4 +19,13 @@ permissions:
     default: op
   christmasevent.stop:
     description: permission to stop event
+    default: op
+  christmasevent.spawn:
+    description: permission to spawn elves
+    default: op
+  christmasevent.exchange:
+    description: permission to exchange gifts
+    default: true
+  christmasevent.give:
+    description: permission to give gifts
     default: op

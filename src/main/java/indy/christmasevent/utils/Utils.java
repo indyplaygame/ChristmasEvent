@@ -2,10 +2,15 @@ package indy.christmasevent.utils;
 
 import hex.util.Skull;
 import indy.christmasevent.main.Main;
+import net.minecraft.server.v1_16_R3.IChatBaseComponent;
+import net.minecraft.server.v1_16_R3.Packet;
+import net.minecraft.server.v1_16_R3.PacketPlayOutTitle;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -60,6 +65,10 @@ public class Utils {
 
     public static int randomInt(int min, int max) {
         return ThreadLocalRandom.current().nextInt(min, max + 1);
+    }
+
+    public static double round(double num, int decimals) {
+        return Math.round(num * Math.pow(10, decimals)) / Math.pow(10, decimals);
     }
 
     public static void sendDebugMessage(String message) {
@@ -126,13 +135,6 @@ public class Utils {
         inventory.setItem(slot, createItem(material, name, lore, amount, head_texture));
     }
 
-    public static List<String> replaceAll(List<String> list, String oldValue, String newValue) {
-        for(int i = 0; i < list.size(); i++) {
-            list.set(i, list.get(i).replace(oldValue, newValue));
-        }
-        return list;
-    }
-
     public static List<String> formatStringElements(List<String> list, String oldValue, String newValue) {
         return list.stream().map(text -> text.replace(oldValue, newValue)).collect(Collectors.toList());
     }
@@ -147,5 +149,11 @@ public class Utils {
             Integer.valueOf(hex.substring(4, 6), 16));
 
         return color;
+    }
+
+    public static void showTitle(Player player, String type,String text, int fadeIn, int stay, int fadeOut) {
+        PacketPlayOutTitle title = new PacketPlayOutTitle(PacketPlayOutTitle.EnumTitleAction.valueOf(type),
+                IChatBaseComponent.ChatSerializer.a("{\"text\":\"" + text + "\"}"), fadeIn, stay, fadeOut);
+        ((CraftPlayer) player).getHandle().playerConnection.sendPacket(title);
     }
 }

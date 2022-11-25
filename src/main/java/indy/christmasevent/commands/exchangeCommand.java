@@ -17,7 +17,7 @@ public class exchangeCommand implements CommandExecutor {
         if(sender.hasPermission("christmasevent.exchange")) {
             if(getConfig().getBoolean("Event.started")) {
                 if(sender instanceof Player) {
-                    ((Player) sender).openInventory(ExchangeGUI.mainGUI((Player) sender));
+                    ((Player) sender).openInventory(ExchangeGUI.getInventory((Player) sender));
                 } else {
                     sender.sendMessage(Utils.getMessage("Messages.non-player-executor"));
                 }

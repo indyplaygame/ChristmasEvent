@@ -28,8 +28,17 @@ public class exchangeSelectedGUI implements Listener {
 
     public static Map<Integer, String> items = new HashMap<>();
 
-    public static Inventory subGUI(Player player) {
+    public exchangeSelectedGUI() {
         inventory = Bukkit.createInventory(null, 9 * getInt("ExchangeGUI.rows"), getMessage("ExchangeGUI.exchange-selected.title"));
+    }
+
+    public static Inventory getInventory(Player player) {
+        initContents(player);
+        return inventory;
+    }
+
+    public static void initContents(Player player) {
+        inventory.clear();
 
         double value = ExchangeGUI.calculateValue(player);
         int slot = 0;
@@ -37,13 +46,13 @@ public class exchangeSelectedGUI implements Listener {
         ExchangeGUI.addItem(inventory, getInt("ExchangeGUI.items.exchange-selected-cancel.slot"), Utils.createItem(
                 getString("ExchangeGUI.items.exchange-selected-cancel.material"),
                 getMessage("ExchangeGUI.items.exchange-selected-cancel.name"),
-                replaceAll(getList("ExchangeGUI.items.exchange-selected-cancel.lore"), "%value%", String.valueOf(value)),
+                formatStringElements(getList("ExchangeGUI.items.exchange-selected-cancel.lore"), "%value%", String.valueOf(value)),
                 getInt("ExchangeGUI.items.exchange-selected-cancel.amount"),
                 getString("ExchangeGUI.items.exchange-selected-cancel.head-texture")));
         ExchangeGUI.addItem(inventory, getInt("ExchangeGUI.items.exchange-selected-back.slot"), Utils.createItem(
                 getString("ExchangeGUI.items.exchange-selected-back.material"),
                 getMessage("ExchangeGUI.items.exchange-selected-back.name"),
-                replaceAll(getList("ExchangeGUI.items.exchange-selected-back.lore"), "%value%", String.valueOf(value)),
+                formatStringElements(getList("ExchangeGUI.items.exchange-selected-back.lore"), "%value%", String.valueOf(value)),
                 getInt("ExchangeGUI.items.exchange-selected-back.amount"),
                 getString("ExchangeGUI.items.exchange-selected-back.head-texture")));
 
@@ -61,7 +70,6 @@ public class exchangeSelectedGUI implements Listener {
         ItemMeta meta;
 
         for(String type : getList("Elves.drops.loot")) {
-
             value = ExchangeGUI.calculateValue(player, type);
             item = Utils.createItem(
                     getString("ExchangeGUI.items.exchange-selected-item.material").replace("%material%", getString("Elves.drops.items." + type + ".material")),
@@ -74,15 +82,13 @@ public class exchangeSelectedGUI implements Listener {
             meta = item.getItemMeta();
             meta.setCustomModelData(getInt("Elves.drops.items." + type + ".custom-model-data"));
 
-            sendDebugMessage("" + getInt("Elves.drops.items." + type + ".custom-model-data"));
+            sendDebugMessage(type + "'s custom model data: " + getInt("Elves.drops.items." + type + ".custom-model-data"));
 
             item.setItemMeta(meta);
 
             ExchangeGUI.addItem(inventory, item);
             items.put(item.getItemMeta().getCustomModelData(), type);
         }
-
-        return inventory;
     }
 
     @EventHandler
@@ -100,11 +106,11 @@ public class exchangeSelectedGUI implements Listener {
         if(slot == getInt("ExchangeGUI.items.exchange-selected-cancel.slot")) {
             player.closeInventory();
         } else if(slot == getInt("ExchangeGUI.items.exchange-selected-back.slot")) {
-            player.openInventory(ExchangeGUI.mainGUI(player));
+            player.openInventory(ExchangeGUI.getInventory(player));
         } else {
-            if(items.containsKey(clickedItem.getItemMeta().getCustomModelData())) {
+            if(clickedItem.getItemMeta().hasCustomModelData() && items.containsKey(clickedItem.getItemMeta().getCustomModelData())) {
                 ExchangeGUI.exchangeGifts(player, items.get(clickedItem.getItemMeta().getCustomModelData()));
-                sendDebugMessage(items.get(clickedItem.getItemMeta().getCustomModelData()));
+                sendDebugMessage("clicked item's custom model data: " + items.get(clickedItem.getItemMeta().getCustomModelData()));
             }
         }
     }
