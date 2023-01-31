@@ -8,6 +8,8 @@ import org.bukkit.command.CommandSender;
 import java.util.HashMap;
 import java.util.Map;
 
+import static indy.christmasevent.utils.Utils.getMessage;
+
 public class Commands implements CommandExecutor {
 
     private Map<String, CommandExecutor> commands = new HashMap<>();
@@ -19,9 +21,9 @@ public class Commands implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String arg, String[] args) {
         if(args.length == 0) {
-            sender.sendMessage(Utils.getMessage("Messages.missing-argument"));
+            sender.sendMessage(getMessage("Messages.missing-argument"));
         } else if (!commands.containsKey(args[0].toLowerCase())) {
-            sender.sendMessage(Utils.getMessage("Messages.wrong-argument"));
+            sender.sendMessage(getMessage("Messages.wrong-argument"));
         } else {
             arg = args[0];
             String[] newArgs = new String[args.length - 1];

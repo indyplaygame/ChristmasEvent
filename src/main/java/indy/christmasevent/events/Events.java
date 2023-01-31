@@ -1,20 +1,15 @@
 package indy.christmasevent.events;
 
 import indy.christmasevent.bossbar.ProgressBar;
-import indy.christmasevent.commands.startCommand;
-import indy.christmasevent.items.Items;
 import indy.christmasevent.loot.elfLoot;
 import indy.christmasevent.mobs.Elf;
-import indy.christmasevent.utils.Utils;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.boss.BossBar;
 import org.bukkit.craftbukkit.v1_16_R3.entity.CraftEntity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -61,7 +56,7 @@ public class Events implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
-        if(Utils.getConfig().getBoolean("Event.started")) {
+        if(getBoolean("Event.started")) {
             if (!bar.getPlayers().contains(e.getPlayer())) {
                 bar.addPlayer(e.getPlayer());
             }

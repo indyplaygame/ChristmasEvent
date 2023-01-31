@@ -1,16 +1,17 @@
 package indy.christmasevent.bossbar;
 
-import indy.christmasevent.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 
+import static indy.christmasevent.utils.Utils.getMessage;
+
 public class ProgressBar {
 
-    static BossBar event_bar = create(Utils.getMessage("Event.bossbar-title"),
-            Utils.getMessage("Event.bossbar-color"),
-            Utils.getMessage("Event.bossbar-style"));
+    static BossBar event_bar = create(getMessage("Event.bossbar-title"),
+            getMessage("Event.bossbar-color"),
+            getMessage("Event.bossbar-style"));
 
     public static BossBar getEventBar() {
         return event_bar;

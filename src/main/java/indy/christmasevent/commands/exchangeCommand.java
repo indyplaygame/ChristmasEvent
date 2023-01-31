@@ -1,14 +1,13 @@
 package indy.christmasevent.commands;
 
 import indy.christmasevent.gui.ExchangeGUI;
-import indy.christmasevent.utils.Utils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 
 import static indy.christmasevent.utils.Utils.getConfig;
+import static indy.christmasevent.utils.Utils.getMessage;
 
 public class exchangeCommand implements CommandExecutor {
 
@@ -19,10 +18,10 @@ public class exchangeCommand implements CommandExecutor {
                 if(sender instanceof Player) {
                     ((Player) sender).openInventory(ExchangeGUI.getInventory((Player) sender));
                 } else {
-                    sender.sendMessage(Utils.getMessage("Messages.non-player-executor"));
+                    sender.sendMessage(getMessage("Messages.non-player-executor"));
                 }
             } else {
-                sender.sendMessage(Utils.getMessage("Messages.event-not-active-message"));
+                sender.sendMessage(getMessage("Messages.event-not-active-message"));
             }
         }
         return false;

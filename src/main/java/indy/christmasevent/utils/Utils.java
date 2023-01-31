@@ -3,7 +3,6 @@ package indy.christmasevent.utils;
 import hex.util.Skull;
 import indy.christmasevent.main.Main;
 import net.minecraft.server.v1_16_R3.IChatBaseComponent;
-import net.minecraft.server.v1_16_R3.Packet;
 import net.minecraft.server.v1_16_R3.PacketPlayOutTitle;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
@@ -151,7 +150,7 @@ public class Utils {
         return color;
     }
 
-    public static void showTitle(Player player, String type,String text, int fadeIn, int stay, int fadeOut) {
+    public static void showTitle(Player player, String type, String text, int fadeIn, int stay, int fadeOut) {
         PacketPlayOutTitle title = new PacketPlayOutTitle(PacketPlayOutTitle.EnumTitleAction.valueOf(type),
                 IChatBaseComponent.ChatSerializer.a("{\"text\":\"" + text + "\"}"), fadeIn, stay, fadeOut);
         ((CraftPlayer) player).getHandle().playerConnection.sendPacket(title);
